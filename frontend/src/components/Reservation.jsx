@@ -18,16 +18,30 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
+//? Valid card inputs :
+//* 4242 4242 4242 4242	Visa	Approved for testing (default)
+//* 4000 0027 6000 3184	Visa (Debit)	Requires authentication
+//* 5555 5555 5555 4444	Mastercard	Approved for testing (default)
+//* 5200 8282 8282 8210	Mastercard (Debit)	Approved for testing
+//* 3782 8224 6310 005	  American Express	Approved for testing
+//* 6011 1111 1111 1117	Discover	Approved for testing
+//* 3056 9309 0259 04	  Diners Club	Approved for testing
+//* 3566 1111 1111 1113	JCB	Approved for testing
+
 // Fonction qui enregistre la réservation après le paiement
 const handleReservation = async (date, selectedTimeSlot) => {
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user.id;
 
+  // Ajuster la date pour correspondre au fuseau horaire local avant la conversion ISO
+  const adjustedDate = new Date(date);
+  adjustedDate.setMinutes(adjustedDate.getMinutes() - adjustedDate.getTimezoneOffset());
+
   const reservationData = {
     dateCreation: new Date().toISOString(),
     statutReservation: 'CONFIRMEE',
     statutPaiement: 'ACOMPTE',
-    dateReservation: date.toISOString(),
+    dateReservation: adjustedDate.toISOString(),
     heureReservation: selectedTimeSlot,
     idClient: userId,
   };
@@ -55,16 +69,6 @@ const stripePromise = loadStripe(
   'pk_test_51QbomrJp77YthrfT7OHv9ZJiBhbswu28p1Q6gdXM9tYtTbM0Mlwh2KIwCxLaH6AFdeMyavRck6Ul2HKpmyB6EvkE00aha7llYZ'
 );
 
-//? Valid card inputs :
-//* 4242 4242 4242 4242	Visa	Approved for testing (default)
-//* 4000 0027 6000 3184	Visa (Debit)	Requires authentication
-//* 5555 5555 5555 4444	Mastercard	Approved for testing (default)
-//* 5200 8282 8282 8210	Mastercard (Debit)	Approved for testing
-//* 3782 8224 6310 005	  American Express	Approved for testing
-//* 6011 1111 1111 1117	Discover	Approved for testing
-//* 3056 9309 0259 04	  Diners Club	Approved for testing
-//* 3566 1111 1111 1113	JCB	Approved for testing
-
 //! Reservation form
 const Reservation = ({ terrain }) => {
   const [date, setDate] = useState(new Date());
@@ -75,11 +79,15 @@ const Reservation = ({ terrain }) => {
 
   useEffect(() => {
     getTime();
+    // fetchReservedSlots();
   }, []);
 
   const getTime = () => {
     const timeList = [];
-    for (let i = 7; i <= 24; i++) {
+    for (let i = 7; i < 10; i++) {
+      timeList.push({ time: `0${i}:00` }); // Format HH:mm
+    }
+    for (let i = 10; i <= 24; i++) {
       timeList.push({ time: `${i == 24 ? '00' : i}:00` }); // Format HH:mm
     }
     setTimeSlot(timeList);
@@ -87,8 +95,7 @@ const Reservation = ({ terrain }) => {
 
   const fetchReservedSlots = async () => {
     try {
-      const response = await api.get('/api/reservations');
-      // const response = await axios.get('http://localhost:8090/api/reservations'); // Modifier l'URL selon votre API
+      const response = await axios.get('http://localhost:8090/api/reservations');
       setReservedSlots(response.data); // Stocke les créneaux réservés (date et timeSlot)
     } catch (error) {
       console.error('Erreur lors de la récupération des réservations:', error);
