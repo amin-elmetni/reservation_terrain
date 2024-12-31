@@ -1,7 +1,6 @@
 package com.example.terrain_management.dto;
 
 import com.example.terrain_management.enums.TypeGazon;
-import com.example.terrain_management.enums.VilleEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +17,15 @@ public class TerrainDto {
     private String ville; // Remplacement par enum
     private TypeGazon typeGazon; // Ajout pour le type de gazon
     private String imageUrl; // Ajout pour l'image
+    private Integer prixParHeure;
+
+    public Integer getPrixParHeure() {
+        return prixParHeure;
+    }
+
+    public void setPrixParHeure(Integer prixParHeure) {
+        this.prixParHeure = prixParHeure;
+    }
 
     // Getters et Setters
     public Integer getId() {

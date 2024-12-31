@@ -28,7 +28,7 @@ const Terrains = () => {
   useEffect(() => {
     if (ville) {
       setFilteredTerrains(
-        terrains.filter((terrain) => terrain.ville.toUpperCase() === ville.toUpperCase())
+        terrains.filter(terrain => terrain.ville.toUpperCase() === ville.toUpperCase())
       );
     } else {
       setFilteredTerrains(terrains);
@@ -41,14 +41,14 @@ const Terrains = () => {
   }, []);
 
   return (
-    <div className="py-6">
-      <p className="text-gray-600 text-lg font-medium mb-4">Parcourir les terrains sportifs</p>
+    <div className='py-6'>
+      <p className='text-gray-600 text-lg font-medium mb-4'>Parcourir les terrains sportifs</p>
       {loading ? (
-        <p className="text-center">Chargement des terrains...</p>
+        <p className='text-center'>Chargement des terrains...</p>
       ) : (
-        <div className="flex flex-col sm:flex-row gap-5">
+        <div className='flex flex-col sm:flex-row gap-5'>
           {/* Colonne des villes pour le filtre */}
-          <div className="flex flex-col gap-4 text-sm text-gray-600 w-full sm:w-1/4">
+          <div className='flex flex-col gap-4 text-sm text-gray-600 w-full sm:w-1/4'>
             {villesData.map((item, index) => (
               <VilleCard
                 key={index}
@@ -58,8 +58,8 @@ const Terrains = () => {
             ))}
           </div>
           {/* Colonne des terrains */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
-            {filteredTerrains.map((terrain) => (
+          <div className='grid grid-cols-auto gap-6 w-full'>
+            {filteredTerrains.map(terrain => (
               <TerrainCard
                 key={terrain.id}
                 onClick={() => navigate(`/terrain/${terrain.id}`)}

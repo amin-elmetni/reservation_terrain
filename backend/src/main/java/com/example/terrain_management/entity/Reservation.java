@@ -1,41 +1,43 @@
 package com.example.terrain_management.entity;
 
-import com.example.terrain_management.enums.PaymentStatusEnum;
-import com.example.terrain_management.enums.ReservationStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "reservations")
 public class Reservation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateReservation = new Date();
+    @Column(name = "date_creation", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDate dateCreation;
 
-    @Enumerated(EnumType.STRING)
-    private ReservationStatusEnum statutReservation;
+    @Column(name = "statut_reservation", nullable = false)
+    private String statutReservation;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentStatusEnum statutPaiement;
-    @Temporal(TemporalType.DATE)
-    private Date dateMatch; // Nouvelle colonne pour la date du match
+    @Column(name = "statut_paiement", nullable = false)
+    private String statutPaiement;
 
-    @Temporal(TemporalType.TIME)
-    private String heureMatch; // Nouvelle colonne pour l'heure du match
+    @Column(name = "date_reservation")
+    private LocalDate dateReservation;
+
+    @Column(name = "heure_reservation")
+    private LocalTime heureReservation;
 
     @ManyToOne
-    @JoinColumn(name = "match_id")
-    private Match match;
+    @JoinColumn(name = "id_client", nullable = false)
+    private Utilisateur client;
 
     // Getters et Setters
+
     public Integer getId() {
         return id;
     }
@@ -44,51 +46,51 @@ public class Reservation {
         this.id = id;
     }
 
-    public Date getDateReservation() {
-        return dateReservation;
+    public LocalDate getDateCreation() {
+        return dateCreation;
     }
 
-    public void setDateReservation(Date dateReservation) {
-        this.dateReservation = dateReservation;
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
     }
 
-    public ReservationStatusEnum getStatutReservation() {
+    public String getStatutReservation() {
         return statutReservation;
     }
 
-    public void setStatutReservation(ReservationStatusEnum statutReservation) {
+    public void setStatutReservation(String statutReservation) {
         this.statutReservation = statutReservation;
     }
 
-    public PaymentStatusEnum getStatutPaiement() {
+    public String getStatutPaiement() {
         return statutPaiement;
     }
 
-    public void setStatutPaiement(PaymentStatusEnum statutPaiement) {
+    public void setStatutPaiement(String statutPaiement) {
         this.statutPaiement = statutPaiement;
     }
 
-    public Match getMatch() {
-        return match;
+    public LocalDate getDateReservation() {
+        return dateReservation;
     }
 
-    public void setMatch(Match match) {
-        this.match = match;
+    public void setDateReservation(LocalDate dateReservation) {
+        this.dateReservation = dateReservation;
     }
 
-    public Date getDateMatch() {
-        return dateMatch;
+    public LocalTime getHeureReservation() {
+        return heureReservation;
     }
 
-    public void setDateMatch(Date dateMatch) {
-        this.dateMatch = dateMatch;
+    public void setHeureReservation(LocalTime heureReservation) {
+        this.heureReservation = heureReservation;
     }
 
-    public String getHeureMatch() {
-        return heureMatch;
+    public Utilisateur getClient() {
+        return client;
     }
 
-    public void setHeureMatch(String heureMatch) {
-        this.heureMatch = heureMatch;
+    public void setClient(Utilisateur client) {
+        this.client = client;
     }
 }

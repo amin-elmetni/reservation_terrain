@@ -10,10 +10,11 @@ import MyBookings from './pages/MyBookings';
 import Terrain from './pages/Terrain';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import PrivateRoute from './components/PrivateRoute'; // Importer PrivateRoute
 
 const App = () => {
   return (
-    <div className='mx-4 sm:mx-[10%]'>
+    <div className='mx-4 sm:mx-[6%]'>
       <Navbar />
       <Routes>
         <Route
@@ -48,10 +49,12 @@ const App = () => {
           path='/my-bookings'
           element={<MyBookings />}
         />
-       <Route
-  path='/terrain/:id' // Changez terrainId en id pour correspondre au nom utilisé
-  element={<Terrain />}
-/>
+
+        {/* Protéger la route Terrain */}
+        <Route
+          path='/terrain/:id'
+          element={<PrivateRoute element={<Terrain />} />}
+        />
       </Routes>
       <Footer />
     </div>

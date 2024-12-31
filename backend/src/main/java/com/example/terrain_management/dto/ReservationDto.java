@@ -1,20 +1,20 @@
 package com.example.terrain_management.dto;
 
-import com.example.terrain_management.enums.PaymentStatusEnum;
-import com.example.terrain_management.enums.ReservationStatusEnum;
-
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ReservationDto {
+
     private Integer id;
-    private Date dateReservation;
-    private Date dateMatch; // Nouvelle colonne
-    private String heureMatch; // Nouvelle colonne
-    private ReservationStatusEnum statutReservation;
-    private PaymentStatusEnum statutPaiement;
-    private Integer matchId;
+    private LocalDate dateCreation;
+    private String statutReservation;
+    private String statutPaiement;
+    private LocalDate dateReservation;
+    private LocalTime heureReservation;
+    private Integer idClient; // L'id du client associé
 
     // Getters et Setters
+
     public Integer getId() {
         return id;
     }
@@ -23,51 +23,51 @@ public class ReservationDto {
         this.id = id;
     }
 
-    public Date getDateReservation() {
-        return dateReservation;
+    public LocalDate getDateCreation() {
+        return dateCreation;
     }
 
-    public void setDateReservation(Date dateReservation) {
-        this.dateReservation = dateReservation;
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
     }
 
-    public ReservationStatusEnum getStatutReservation() {
+    public String getStatutReservation() {
         return statutReservation;
     }
 
-    public void setStatutReservation(ReservationStatusEnum statutReservation) {
+    public void setStatutReservation(String statutReservation) {
         this.statutReservation = statutReservation;
     }
 
-    public PaymentStatusEnum getStatutPaiement() {
+    public String getStatutPaiement() {
         return statutPaiement;
     }
 
-    public void setStatutPaiement(PaymentStatusEnum statutPaiement) {
+    public void setStatutPaiement(String statutPaiement) {
         this.statutPaiement = statutPaiement;
     }
 
-    public Integer getMatchId() {
-        return matchId;
+    public LocalDate getDateReservation() {
+        return dateReservation;
     }
 
-    public void setMatchId(Integer matchId) {
-        this.matchId = matchId;
+    public void setDateReservation(LocalDate dateReservation) {
+        this.dateReservation = dateReservation;
     }
 
-    public Date getDateMatch() {
-        return dateMatch;
+    public LocalTime getHeureReservation() {
+        return heureReservation;
     }
 
-    public void setDateMatch(Date dateMatch) {
-        this.dateMatch = dateMatch;
+    public void setHeureReservation(LocalTime heureReservation) {
+        this.heureReservation = heureReservation;
     }
 
-    public String getHeureMatch() {
-        return heureMatch;
+    public Integer getIdClient() {
+        return idClient;
     }
 
-    public void setHeureMatch(String heureMatch) {
-        this.heureMatch = heureMatch;
+    public void setIdClient(Integer idClient) {
+        this.idClient = idClient;
     }
 }
