@@ -42,15 +42,14 @@ const App = () => {
           element={<Contact />}
         />
         <Route
-          path='/my-profile'
+          path='/mon-profile'
           element={<MyProfile />}
         />
         <Route
           path='/mes-reservations'
-          element={<MesReservations />}
+          element={<PrivateRoute element={<MesReservations />} />}
         />
 
-        {/* Protéger la route Terrain */}
         <Route
           path='/terrain/:id'
           element={<PrivateRoute element={<Terrain />} />}

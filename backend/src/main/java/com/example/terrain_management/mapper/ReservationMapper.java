@@ -18,6 +18,7 @@ public class ReservationMapper {
         dto.setDateReservation(reservation.getDateReservation());
         dto.setHeureReservation(reservation.getHeureReservation());
         dto.setIdClient(reservation.getClient().getId());
+        dto.setIdTerrain(reservation.getTerrain().getId());
 
         return dto;
     }

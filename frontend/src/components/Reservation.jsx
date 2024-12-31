@@ -29,51 +29,52 @@ import api from '@/api'; // Fichier Axios pour les appels API
 //* 3056 9309 0259 04	  Diners Club	Approved for testing
 //* 3566 1111 1111 1113	JCB	Approved for testing
 
-// Fonction qui enregistre la réservation après le paiement
-const handleReservation = async (date, selectedTimeSlot) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const userId = user.id;
-
-  // Ajuster la date pour correspondre au fuseau horaire local avant la conversion ISO
-  const adjustedDate = new Date(date);
-  adjustedDate.setMinutes(adjustedDate.getMinutes() - adjustedDate.getTimezoneOffset());
-
-  const reservationData = {
-    dateCreation: new Date().toISOString(),
-    statutReservation: 'CONFIRMEE',
-    statutPaiement: 'ACOMPTE',
-    dateReservation: adjustedDate.toISOString(),
-    heureReservation: selectedTimeSlot,
-    idClient: userId,
-  };
-
-  try {
-    const response = await axios.post('http://localhost:8090/api/reservations', reservationData);
-    Swal.fire({
-      title: 'Réservation Confirmée',
-      text: 'Votre réservation a été confirmée avec succès!',
-      icon: 'success',
-      confirmButtonText: 'OK',
-      timer: 3000,
-    }).then(() => {
-      window.location.reload(); // Recharge la page une fois la fenêtre fermée
-    });
-  } catch (error) {
-    Swal.fire({
-      title: 'Erreur',
-      text: "Une erreur s'est produite lors de la confirmation de votre réservation.",
-      icon: 'error',
-      timer: 3000,
-    });
-  }
-};
-
 const stripePromise = loadStripe(
   'pk_test_51QbomrJp77YthrfT7OHv9ZJiBhbswu28p1Q6gdXM9tYtTbM0Mlwh2KIwCxLaH6AFdeMyavRck6Ul2HKpmyB6EvkE00aha7llYZ'
 );
 
 //! Reservation form
 const Reservation = ({ terrain }) => {
+  // Fonction qui enregistre la réservation après le paiement
+  const handleReservation = async (date, selectedTimeSlot) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user.id;
+
+    // Ajuster la date pour correspondre au fuseau horaire local avant la conversion ISO
+    const adjustedDate = new Date(date);
+    adjustedDate.setMinutes(adjustedDate.getMinutes() - adjustedDate.getTimezoneOffset());
+
+    const reservationData = {
+      dateCreation: new Date().toISOString(),
+      statutReservation: 'CONFIRMEE',
+      statutPaiement: 'ACOMPTE',
+      dateReservation: adjustedDate.toISOString(),
+      heureReservation: selectedTimeSlot,
+      idClient: userId,
+      idTerrain: terrain.id,
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8090/api/reservations', reservationData);
+      Swal.fire({
+        title: 'Réservation Confirmée',
+        text: 'Votre réservation a été confirmée avec succès!',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        timer: 3000,
+      }).then(() => {
+        window.location.reload(); // Recharge la page une fois la fenêtre fermée
+      });
+    } catch (error) {
+      Swal.fire({
+        title: 'Erreur',
+        text: "Une erreur s'est produite lors de la confirmation de votre réservation.",
+        icon: 'error',
+        timer: 3000,
+      });
+    }
+  };
+
   const getTomorrowDate = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1); // Ajoute 1 jour à la date actuelle

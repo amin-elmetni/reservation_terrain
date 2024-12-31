@@ -2,6 +2,7 @@ package com.example.terrain_management.service;
 
 import com.example.terrain_management.dto.ReservationDto;
 import com.example.terrain_management.entity.Reservation;
+import com.example.terrain_management.entity.Terrain;
 import com.example.terrain_management.entity.Utilisateur;
 import com.example.terrain_management.mapper.ReservationMapper;
 import com.example.terrain_management.repository.ReservationRepository;
@@ -45,6 +46,11 @@ public class ReservationService {
         client.setId(reservationDto.getIdClient());
         reservation.setClient(client);
 
+        // Assurez-vous que le client est correctement défini en fonction de l'ID du client
+        Terrain terrain = new Terrain();
+        terrain.setId(reservationDto.getIdTerrain());
+        reservation.setTerrain(terrain);
+
         // Enregistrez la réservation dans la base de données
         reservationRepository.save(reservation);
 
@@ -54,14 +60,20 @@ public class ReservationService {
     public void cancelReservation(Integer id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Réservation non trouvée"));
-        reservation.setStatutReservation("Annulée");
+        reservation.setStatutReservation("ANNULEE");
         reservationRepository.save(reservation);
     }
 
     public void expireReservation(Integer id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Réservation non trouvée"));
-        reservation.setStatutReservation("Expirée");
+        reservation.setStatutReservation("EXPIREE");
         reservationRepository.save(reservation);
+    }
+
+    public List<ReservationDto> getReservationsByClientAndStatus(Integer clientId, String status) {
+        return reservationRepository.findByClientIdAndStatutReservation(clientId, status).stream()
+                .map(ReservationMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

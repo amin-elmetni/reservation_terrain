@@ -43,4 +43,11 @@ public class ReservationController {
         reservationService.expireReservation(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/client")
+    public ResponseEntity<List<ReservationDto>> getReservationsByClientAndStatus(
+            @RequestParam Integer clientId,
+            @RequestParam String status) {
+        return ResponseEntity.ok(reservationService.getReservationsByClientAndStatus(clientId, status));
+    }
 }

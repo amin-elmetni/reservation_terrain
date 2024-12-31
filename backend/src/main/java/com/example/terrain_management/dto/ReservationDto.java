@@ -12,8 +12,16 @@ public class ReservationDto {
     private LocalDate dateReservation;
     private LocalTime heureReservation;
     private Integer idClient; // L'id du client associé
+    private Integer idTerrain; // L'id du client associé
 
-    // Getters et Setters
+    public Integer getIdTerrain() {
+        return idTerrain;
+    }
+
+    public void setIdTerrain(Integer idTerrain) {
+        this.idTerrain = idTerrain;
+    }
+// Getters et Setters
 
     public Integer getId() {
         return id;
