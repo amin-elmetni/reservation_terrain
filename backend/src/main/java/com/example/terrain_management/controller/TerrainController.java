@@ -1,6 +1,7 @@
 package com.example.terrain_management.controller;
 
 import com.example.terrain_management.dto.TerrainDto;
+import com.example.terrain_management.enums.VilleEnum;
 import com.example.terrain_management.service.TerrainService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +43,12 @@ public class TerrainController {
         terrainService.deleteTerrain(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping("/ville/{ville}")
+    public List<TerrainDto> getTerrainsByVille(@PathVariable VilleEnum ville) {
+        return terrainService.getTerrainsByVille(ville);
+    }
+
+
 }

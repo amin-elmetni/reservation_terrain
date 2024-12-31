@@ -38,9 +38,7 @@ public class TerrainService {
     }
 
     public TerrainDto createTerrain(TerrainDto terrainDto) {
-        // Convertir le DTO en entité
         Terrain terrain = TerrainMapper.toEntity(terrainDto);
-
         // Rechercher le responsable et l'associer au terrain
         if (terrainDto.getResponsableId() != null) {
             Utilisateur responsable = utilisateurRepository.findById(terrainDto.getResponsableId())
@@ -50,11 +48,11 @@ public class TerrainService {
             }
             terrain.setResponsable(responsable);
         }
-
         // Sauvegarder le terrain et retourner le DTO
         terrain = terrainRepository.save(terrain);
         return TerrainMapper.toDto(terrain);
     }
+
 
     public TerrainDto updateTerrain(Integer id, TerrainDto terrainDto) {
         Terrain terrain = terrainRepository.findById(id)
@@ -65,12 +63,14 @@ public class TerrainService {
         terrain.setLocalisation(terrainDto.getLocalisation());
         terrain.setDisponibilite(terrainDto.getDisponibilite());
         terrain.setCapacite(terrainDto.getCapacite());
-        terrain.setVille(terrainDto.getVille() != null ? VilleEnum.valueOf(terrainDto.getVille()) : null); // Conversion String -> enum
+        terrain.setVille(terrainDto.getVille() != null ? VilleEnum.valueOf(terrainDto.getVille()) : null);
         terrain.setTypeGazon(terrainDto.getTypeGazon());
         terrain.setImageUrl(terrainDto.getImageUrl());
+        terrain.setPrixParHeure(terrainDto.getPrixParHeure()); // Mise à jour du champ
 
         return TerrainMapper.toDto(terrainRepository.save(terrain));
     }
+
 
     public void deleteTerrain(Integer id) {
         if (!terrainRepository.existsById(id)) {
@@ -78,4 +78,11 @@ public class TerrainService {
         }
         terrainRepository.deleteById(id);
     }
+
+    public List<TerrainDto> getTerrainsByVille(VilleEnum ville) {
+        return terrainRepository.findByVille(ville).stream()
+                .map(TerrainMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

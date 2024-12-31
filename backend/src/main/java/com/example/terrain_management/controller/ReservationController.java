@@ -1,4 +1,3 @@
-// ReservationController.java
 package com.example.terrain_management.controller;
 
 import com.example.terrain_management.dto.ReservationDto;

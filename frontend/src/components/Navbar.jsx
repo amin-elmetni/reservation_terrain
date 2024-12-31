@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { assets } from '../assets/assets';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
@@ -6,8 +6,19 @@ import { Button } from './ui/button';
 const Navbar = () => {
   const navigate = useNavigate();
 
+  // Utiliser l'état pour la gestion du menu
   const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(true);
+
+  // Vérifier si le token existe dans le localStorage au chargement du composant
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+
+  // Effectue un changement du token et met à jour l'état
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setToken(null);
+    navigate('/'); // Redirection vers la page de login après déconnexion
+  };
 
   return (
     <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
@@ -40,24 +51,24 @@ const Navbar = () => {
             <img
               className='w-10 rounded-full border-2 bg-gray-200 group-hover:border-primary transition'
               src={assets.avatar}
-              alt=''
+              alt='User Avatar'
             />
             <div className='absolute top-1 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
               <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                 <p
-                  onClick={() => navigate('my-profile')}
+                  onClick={() => navigate('/my-profile')}
                   className='hover:text-primary cursor-pointer'
                 >
                   My profile
                 </p>
                 <p
-                  onClick={() => navigate('my-bookings')}
+                  onClick={() => navigate('/my-bookings')}
                   className='hover:text-primary cursor-pointer'
                 >
                   My bookings
                 </p>
                 <p
-                  onClick={() => setToken(false)}
+                  onClick={handleLogout} // Déconnexion
                   className='hover:text-primary cursor-pointer'
                 >
                   Logout
@@ -68,9 +79,9 @@ const Navbar = () => {
         ) : (
           <button
             onClick={() => navigate('/login')}
-            className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'
+            className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block hover:bg-opacity-85 transition'
           >
-            Créer Compte
+            Connexion
           </button>
         )}
       </div>

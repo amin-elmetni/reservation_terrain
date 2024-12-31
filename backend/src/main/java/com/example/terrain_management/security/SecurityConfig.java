@@ -31,7 +31,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         // Autoriser l'accès public à certaines routes
-                        .requestMatchers("/api/auth/**", "/client/**", "/api/terrains/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/utilisateurs/**", "/api/terrains/**", "/api/reservations/**").permitAll()
                         // Tout le reste nécessite une authentification
                         .anyRequest().authenticated()
                 )
@@ -39,7 +39,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
 
     @Bean

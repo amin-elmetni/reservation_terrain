@@ -14,3 +14,7 @@
 ::-webkit-scrollbar {
   @apply hidden;
 }
+
+.swal2-container {
+  z-index: 9999 !important;
+}

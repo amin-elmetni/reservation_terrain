@@ -31,6 +31,16 @@ public class Terrain {
     @JoinColumn(name = "responsable_id")
     private Utilisateur responsable;
 
+    private Integer prixParHeure;
+
+    public Integer getPrixParHeure() {
+        return prixParHeure;
+    }
+
+    public void setPrixParHeure(Integer prixParHeure) {
+        this.prixParHeure = prixParHeure;
+    }
+
     // Getters et Setters
     public Integer getId() {
         return id;
