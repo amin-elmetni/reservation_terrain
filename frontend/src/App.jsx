@@ -11,6 +11,7 @@ import Terrain from './pages/Terrain';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute'; // Importer PrivateRoute
+import Signup from './pages/Signup';
 
 const App = () => {
   return (
@@ -49,7 +50,10 @@ const App = () => {
           path='/mes-reservations'
           element={<PrivateRoute element={<MesReservations />} />}
         />
-
+        <Route
+          path='/signup'
+          element={<Signup />}
+        />
         <Route
           path='/terrain/:id'
           element={<PrivateRoute element={<Terrain />} />}

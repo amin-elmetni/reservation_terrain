@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '@/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,8 +17,8 @@ const Login = () => {
 
     try {
       // Appel API pour le login
-      const response = await axios.post(
-        'http://localhost:8090/api/auth/login',
+      const response = await api.post(
+        '/api/auth/login',
         {
           email: email.trim(),
           password,
@@ -107,7 +107,15 @@ const Login = () => {
         </button>
         <p>
           Vous n'avez pas de compte ?{' '}
-          <span className='text-primary underline cursor-pointer'>Inscrivez-vous ici</span>
+          <a
+            onClick={() => {
+              navigate('/signup');
+              scrollTo(0, 30);
+            }}
+            className='text-primary underline cursor-pointer'
+          >
+            Inscrivez-vous ici
+          </a>
         </p>
       </div>
     </form>

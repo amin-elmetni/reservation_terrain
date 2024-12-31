@@ -9,11 +9,11 @@ import com.example.terrain_management.enums.VilleEnum;
 import com.example.terrain_management.mapper.UtilisateurMapper;
 import com.example.terrain_management.repository.ClientRepository;
 import com.example.terrain_management.repository.UtilisateurRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UtilisateurService {
@@ -75,11 +75,25 @@ public class UtilisateurService {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur not found"));
 
-        utilisateur.setNom(utilisateurDto.getNom());
-        utilisateur.setEmail(utilisateurDto.getEmail());
-        utilisateur.setTelephone(utilisateurDto.getTelephone());
-        utilisateur.setRole(utilisateurDto.getRole());
-        utilisateur.setVille(utilisateurDto.getVille() != null ? VilleEnum.valueOf(utilisateurDto.getVille()) : null); // Conversion String -> enum
+        if (utilisateurDto.getNom() != null) {
+            utilisateur.setNom(utilisateurDto.getNom());
+        }
+        if (utilisateurDto.getEmail() != null) {
+            utilisateur.setEmail(utilisateurDto.getEmail());
+        }
+        if (utilisateurDto.getTelephone() != null) {
+            utilisateur.setTelephone(utilisateurDto.getTelephone());
+        }
+        if (utilisateurDto.getRole() != null) {
+            utilisateur.setRole(utilisateurDto.getRole());
+        }
+        if (utilisateurDto.getVille() != null) {
+            utilisateur.setVille(VilleEnum.valueOf(utilisateurDto.getVille()));
+        }
+
+        if (utilisateurDto.getPassword() != null && !utilisateurDto.getPassword().isEmpty()) {
+            utilisateur.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
+        }
 
         return UtilisateurMapper.toDto(utilisateurRepository.save(utilisateur));
     }
