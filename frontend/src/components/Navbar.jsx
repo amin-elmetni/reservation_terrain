@@ -59,13 +59,13 @@ const Navbar = () => {
                   onClick={() => navigate('/my-profile')}
                   className='hover:text-primary cursor-pointer'
                 >
-                  My profile
+                  Mon Profile
                 </p>
                 <p
-                  onClick={() => navigate('/my-bookings')}
+                  onClick={() => navigate('/mes-reservations')}
                   className='hover:text-primary cursor-pointer'
                 >
-                  My bookings
+                  Mes Reservation
                 </p>
                 <p
                   onClick={handleLogout} // Déconnexion

@@ -17,6 +17,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import api from '@/api'; // Fichier Axios pour les appels API
 
 //? Valid card inputs :
 //* 4242 4242 4242 4242	Visa	Approved for testing (default)
@@ -54,6 +55,8 @@ const handleReservation = async (date, selectedTimeSlot) => {
       icon: 'success',
       confirmButtonText: 'OK',
       timer: 3000,
+    }).then(() => {
+      window.location.reload(); // Recharge la page une fois la fenêtre fermée
     });
   } catch (error) {
     Swal.fire({
@@ -71,7 +74,13 @@ const stripePromise = loadStripe(
 
 //! Reservation form
 const Reservation = ({ terrain }) => {
-  const [date, setDate] = useState(new Date());
+  const getTomorrowDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1); // Ajoute 1 jour à la date actuelle
+    return tomorrow;
+  };
+
+  const [date, setDate] = useState(getTomorrowDate());
   const [timeSlot, setTimeSlot] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
   const [openDialog, setOpenDialog] = useState({ reservation: false, payment: false });
@@ -79,7 +88,7 @@ const Reservation = ({ terrain }) => {
 
   useEffect(() => {
     getTime();
-    // fetchReservedSlots();
+    fetchReservedSlots();
   }, []);
 
   const getTime = () => {
@@ -95,26 +104,44 @@ const Reservation = ({ terrain }) => {
 
   const fetchReservedSlots = async () => {
     try {
-      const response = await axios.get('http://localhost:8090/api/reservations');
-      setReservedSlots(response.data); // Stocke les créneaux réservés (date et timeSlot)
+      const response = await api.get('/api/reservations');
+      setReservedSlots(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des réservations:', error);
     }
   };
 
-  const isDateReserved = selectedDate => {
-    // Vérifie si une date est réservée
-    return reservedSlots.some(
-      reservation => reservation.date === selectedDate.toISOString().split('T')[0]
-    );
-  };
+  // const isDateReserved = selectedDate => {
+  //   // Vérifie si une date est réservée
+  //   const selectedDateFormatted = new Date(selectedDate);
+  //   selectedDateFormatted.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour une comparaison précise
 
-  const isTimeSlotReserved = (date, timeSlot) => {
-    // Vérifie si un créneau horaire est réservé pour la date donnée
-    return reservedSlots.some(
-      reservation =>
-        reservation.date === date.toISOString().split('T')[0] && reservation.timeSlot === timeSlot
-    );
+  //   return reservedSlots.some(reservation => {
+  //     const reservedDate = new Date(reservation.dateReservation); // Assurez-vous que c'est bien un objet Date
+  //     reservedDate.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour une comparaison précise
+  //     return reservedDate.getTime() === selectedDateFormatted.getTime();
+  //   });
+  // };
+
+  const isTimeSlotReserved = (selectedDate, timeSlot) => {
+    // Vérifie si un créneau horaire est réservé pour une date donnée
+    return reservedSlots.some(reservation => {
+      const reservedDate = new Date(reservation.dateReservation); // Assurez-vous que c'est bien un objet Date
+      const reservedTime = reservation.heureReservation; // "HH:mm:ss"
+      const formattedTimeSlot = `${timeSlot}:00`; // Ajoute ":00" pour correspondre au format "HH:mm:ss"
+
+      // Compare la date (sans l'heure) et l'heure
+      const selectedDateFormatted = new Date(selectedDate);
+      selectedDateFormatted.setHours(0, 0, 0, 0); // Réinitialiser l'heure de la date sélectionnée pour une comparaison précise
+
+      const reservedDateFormatted = new Date(reservedDate);
+      reservedDateFormatted.setHours(0, 0, 0, 0); // Réinitialiser l'heure de la date réservée pour une comparaison précise
+
+      return (
+        reservedDateFormatted.getTime() === selectedDateFormatted.getTime() &&
+        reservedTime === formattedTimeSlot
+      );
+    });
   };
 
   const isPastDate = day => day < new Date();
@@ -244,18 +271,18 @@ const Reservation = ({ terrain }) => {
                   </div>
                   <div className='grid grid-cols-3 gap-2 border rounded-lg p-5'>
                     {timeSlot?.map((item, index) => (
-                      <h2
+                      <button
                         key={index}
                         onClick={() => setSelectedTimeSlot(item.time)}
-                        className={`p-2 border text-center rounded-full hover:bg-primary hover:text-white cursor-pointer transition ${
+                        className={`p-2 border text-center rounded-full  cursor-pointer transition ${
                           isTimeSlotReserved(date, item.time)
                             ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
-                            : ''
+                            : 'hover:bg-primary hover:text-white'
                         } ${item.time === selectedTimeSlot && 'bg-primary text-white'}`}
                         disabled={isTimeSlotReserved(date, item.time)}
                       >
                         {item.time}
-                      </h2>
+                      </button>
                     ))}
                   </div>
                 </div>

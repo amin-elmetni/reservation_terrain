@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import MyProfile from './pages/MyProfile';
-import MyBookings from './pages/MyBookings';
+import MesReservations from './pages/MesReservations';
 import Terrain from './pages/Terrain';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -46,8 +46,8 @@ const App = () => {
           element={<MyProfile />}
         />
         <Route
-          path='/my-bookings'
-          element={<MyBookings />}
+          path='/mes-reservations'
+          element={<MesReservations />}
         />
 
         {/* Protéger la route Terrain */}
