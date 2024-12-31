@@ -22,6 +22,7 @@ export const assets = {
   group_profiles,
   header,
   banner,
+  limpica
 };
 
 // * Villes : Tetouan, Tanger, Casablanca, Rabat, Merrakech, Fes, Agadir

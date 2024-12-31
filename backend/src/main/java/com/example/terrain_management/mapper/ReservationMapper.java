@@ -4,6 +4,7 @@ import com.example.terrain_management.dto.ReservationDto;
 import com.example.terrain_management.entity.Reservation;
 
 public class ReservationMapper {
+
     public static ReservationDto toDto(Reservation reservation) {
         if (reservation == null) {
             return null;
@@ -11,16 +12,15 @@ public class ReservationMapper {
 
         ReservationDto dto = new ReservationDto();
         dto.setId(reservation.getId());
-        dto.setDateReservation(reservation.getDateReservation());
+        dto.setDateCreation(reservation.getDateCreation());
         dto.setStatutReservation(reservation.getStatutReservation());
         dto.setStatutPaiement(reservation.getStatutPaiement());
-        dto.setDateMatch(reservation.getDateMatch());
-        dto.setHeureMatch(reservation.getHeureMatch());
-        dto.setMatchId(reservation.getMatch() != null ? reservation.getMatch().getId() : null);
+        dto.setDateReservation(reservation.getDateReservation());
+        dto.setHeureReservation(reservation.getHeureReservation());
+        dto.setIdClient(reservation.getClient().getId());
 
         return dto;
     }
-
 
     public static Reservation toEntity(ReservationDto dto) {
         if (dto == null) {
@@ -29,13 +29,12 @@ public class ReservationMapper {
 
         Reservation reservation = new Reservation();
         reservation.setId(dto.getId());
-        reservation.setDateReservation(dto.getDateReservation());
+        reservation.setDateCreation(dto.getDateCreation());
         reservation.setStatutReservation(dto.getStatutReservation());
         reservation.setStatutPaiement(dto.getStatutPaiement());
-        reservation.setDateMatch(dto.getDateMatch());
-        reservation.setHeureMatch(dto.getHeureMatch());
+        reservation.setDateReservation(dto.getDateReservation());
+        reservation.setHeureReservation(dto.getHeureReservation());
 
         return reservation;
     }
-
 }

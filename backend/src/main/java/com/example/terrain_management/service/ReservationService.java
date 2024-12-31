@@ -1,15 +1,13 @@
 package com.example.terrain_management.service;
 
 import com.example.terrain_management.dto.ReservationDto;
-import com.example.terrain_management.entity.Match;
 import com.example.terrain_management.entity.Reservation;
-import com.example.terrain_management.enums.ReservationStatusEnum;
+import com.example.terrain_management.entity.Utilisateur;
 import com.example.terrain_management.mapper.ReservationMapper;
-import com.example.terrain_management.repository.MatchRepository;
 import com.example.terrain_management.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,11 +15,9 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final MatchRepository matchRepository; // Ajout du MatchRepository
 
-    public ReservationService(ReservationRepository reservationRepository, MatchRepository matchRepository) {
+    public ReservationService(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
-        this.matchRepository = matchRepository; // Injection du MatchRepository
     }
 
     public List<ReservationDto> getAllReservations() {
@@ -37,43 +33,35 @@ public class ReservationService {
     }
 
     public ReservationDto createReservation(ReservationDto reservationDto) {
-        Reservation reservation = ReservationMapper.toEntity(reservationDto);
+        Reservation reservation = new Reservation();
+        reservation.setDateCreation(LocalDate.now());
+        reservation.setStatutReservation("CONFIRMEE");  // Statut de réservation confirmé
+        reservation.setStatutPaiement("ACOMPTE");      // Statut de paiement acompte
+        reservation.setDateReservation(reservationDto.getDateReservation());
+        reservation.setHeureReservation(reservationDto.getHeureReservation());
 
-        if (reservationDto.getMatchId() != null) {
-            Match match = matchRepository.findById(reservationDto.getMatchId())
-                    .orElseThrow(() -> new RuntimeException("Match non trouvé"));
+        // Assurez-vous que le client est correctement défini en fonction de l'ID du client
+        Utilisateur client = new Utilisateur();
+        client.setId(reservationDto.getIdClient());
+        reservation.setClient(client);
 
-            // Associer les données du match à la réservation
-            reservation.setMatch(match);
-            reservation.setDateMatch(match.getDateMatch());
-            reservation.setHeureMatch(match.getHeureMatch());
-        } else {
-            throw new RuntimeException("Match ID manquant pour la réservation");
-        }
+        // Enregistrez la réservation dans la base de données
+        reservationRepository.save(reservation);
 
-        // Définir la date de réservation avec la date actuelle
-        reservation.setDateReservation(new Date());
-
-        // Définir le statut par défaut
-        reservation.setStatutReservation(ReservationStatusEnum.EN_ATTENTE);
-
-        // Sauvegarder et retourner le DTO
-        return ReservationMapper.toDto(reservationRepository.save(reservation));
+        return reservationDto;
     }
-
-
 
     public void cancelReservation(Integer id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Réservation non trouvée"));
-        reservation.setStatutReservation(ReservationStatusEnum.ANNULEE);
+        reservation.setStatutReservation("Annulée");
         reservationRepository.save(reservation);
     }
 
     public void expireReservation(Integer id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Réservation non trouvée"));
-        reservation.setStatutReservation(ReservationStatusEnum.EXPIREE);
+        reservation.setStatutReservation("Expirée");
         reservationRepository.save(reservation);
     }
 }

@@ -1,12 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import TerrainCard from './reusable/TerrainCard';
-import { terrainsData } from '@/assets/assets';
 import { useNavigate } from 'react-router-dom';
-// import { AppContext } from '@/context/AppContext';
+import api from '@/api'; // Assurez-vous que ce fichier contient la configuration Axios
 
 const TopTerrains = () => {
+  const [terrains, setTerrains] = useState([]);
   const navigate = useNavigate();
-  // const { terrainsData } = useContext(AppContext);
+
+  // Récupération des terrains depuis le backend
+  useEffect(() => {
+    const fetchTerrains = async () => {
+      try {
+        const response = await api.get('/api/terrains');
+        setTerrains(response.data.slice(0, 4));
+      } catch (error) {
+        console.error('Erreur lors de la récupération des terrains :', error);
+      }
+    };
+
+    fetchTerrains();
+  }, []);
 
   return (
     <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
@@ -14,17 +27,17 @@ const TopTerrains = () => {
       <p className='text-center text-sm'>
         Il suffit de parcourir notre vaste liste de terrains de sport
       </p>
-      <div className='w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0'>
-        {terrainsData.slice(0, 10).map((item, index) => (
+      <div className='w-full grid grid-cols-4 gap-4 pt-5 gap-y-6 px-3 sm:px-0'>
+        {terrains.map((item, index) => (
           <TerrainCard
             key={index}
             onClick={() => navigate(`/terrain/${item.id}`)}
-            image={item.image}
+            image={item.imageUrl}
             disponibilite={item.disponibilite}
             nom={item.nom}
             ville={item.ville}
             capacite={item.capacite}
-            type_gazon={item.type_gazon}
+            type_gazon={item.typeGazon}
           />
         ))}
       </div>

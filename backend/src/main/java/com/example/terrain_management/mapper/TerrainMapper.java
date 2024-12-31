@@ -3,6 +3,7 @@ package com.example.terrain_management.mapper;
 import com.example.terrain_management.dto.TerrainDto;
 import com.example.terrain_management.entity.Terrain;
 import com.example.terrain_management.enums.VilleEnum;
+
 public class TerrainMapper {
 
     public static TerrainDto toDto(Terrain terrain) {
@@ -17,6 +18,7 @@ public class TerrainMapper {
         dto.setTypeGazon(terrain.getTypeGazon());
         dto.setImageUrl(terrain.getImageUrl());
         dto.setResponsableId(terrain.getResponsable() != null ? terrain.getResponsable().getId() : null); // Association Responsable
+        dto.setPrixParHeure(terrain.getPrixParHeure()); // Ajout du champ
         return dto;
     }
 
@@ -31,6 +33,7 @@ public class TerrainMapper {
         terrain.setVille(dto.getVille() != null ? VilleEnum.valueOf(dto.getVille()) : null);
         terrain.setTypeGazon(dto.getTypeGazon());
         terrain.setImageUrl(dto.getImageUrl());
+        terrain.setPrixParHeure(dto.getPrixParHeure()); // Ajout du champ
         return terrain;
     }
 }
