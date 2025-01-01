@@ -36,7 +36,18 @@ public class Reservation {
     @JoinColumn(name = "id_client", nullable = false)
     private Utilisateur client;
 
+    @ManyToOne
+    @JoinColumn(name = "id_terrain", nullable = false)
+    private Terrain terrain;
+
     // Getters et Setters
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+    }
 
     public Integer getId() {
         return id;

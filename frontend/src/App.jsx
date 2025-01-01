@@ -6,11 +6,12 @@ import Login from './pages/Login';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import MyProfile from './pages/MyProfile';
-import MyBookings from './pages/MyBookings';
+import MesReservations from './pages/MesReservations';
 import Terrain from './pages/Terrain';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute'; // Importer PrivateRoute
+import Signup from './pages/Signup';
 
 const App = () => {
   return (
@@ -42,15 +43,17 @@ const App = () => {
           element={<Contact />}
         />
         <Route
-          path='/my-profile'
+          path='/mon-profile'
           element={<MyProfile />}
         />
         <Route
-          path='/my-bookings'
-          element={<MyBookings />}
+          path='/mes-reservations'
+          element={<PrivateRoute element={<MesReservations />} />}
         />
-
-        {/* Protéger la route Terrain */}
+        <Route
+          path='/signup'
+          element={<Signup />}
+        />
         <Route
           path='/terrain/:id'
           element={<PrivateRoute element={<Terrain />} />}
