@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { assets } from '../assets/assets';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Button } from './ui/button';
 
 const Navbar = () => {
   const navigate = useNavigate();

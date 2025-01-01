@@ -1,7 +1,10 @@
 import React from 'react';
 import { assets } from '@/assets/assets';
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
+  const navigate = useNavigate();
+
   return (
     <div className='flex bg-primary rounded-lg px-6 sm:px-10 md:px-17 lg:px-12 mb-20 mt-32 md:mx-10'>
       {/* //* ---------- Left Side ---------- */}
@@ -10,7 +13,13 @@ const Banner = () => {
           <p>Jouer Match</p>
           <p className='mt-4'>Avec 100+ Terrains sportifs</p>
         </div>
-        <button className='bg-white text-sm sm:text-base text-gray-600 px-8 py-3 rounded-full mt-6 hover:scale-105 transition-all'>
+        <button
+          onClick={() => {
+            navigate('/signup');
+            scrollTo(0, 30);
+          }}
+          className='bg-white text-sm sm:text-base text-gray-600 px-8 py-3 rounded-full mt-6 hover:scale-105 transition-all'
+        >
           Créer Compte
         </button>
       </div>
