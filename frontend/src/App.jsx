@@ -3,8 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Terrains from './pages/Terrains';
 import Login from './pages/Login';
-import About from './pages/About';
-import Contact from './pages/Contact';
 import MyProfile from './pages/MyProfile';
 import MesReservations from './pages/MesReservations';
 import Terrain from './pages/Terrain';
@@ -35,16 +33,8 @@ const App = () => {
           element={<Login />}
         />
         <Route
-          path='/about'
-          element={<About />}
-        />
-        <Route
-          path='/contact'
-          element={<Contact />}
-        />
-        <Route
-          path='/mon-profile'
-          element={<MyProfile />}
+          path='/mon-profil'
+          element={<PrivateRoute element={<MyProfile />} />}
         />
         <Route
           path='/mes-reservations'

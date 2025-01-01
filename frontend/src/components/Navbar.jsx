@@ -24,7 +24,7 @@ const Navbar = () => {
     <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
       <img
         onClick={() => navigate('/')}
-        className='cursor-pointer'
+        className='cursor-pointer h-[48px]'
         src={assets.logo}
       />
       <ul className='hidden md:flex items-start gap-5 font-medium'>
@@ -36,14 +36,18 @@ const Navbar = () => {
           <li className='py-1 peer hover:scale-105 transition'>Terrains</li>
           <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto peer-hover:block peer-hover:bg-gray-300 hidden' />
         </NavLink>
-        <NavLink to='/about'>
-          <li className='py-1 peer hover:scale-105 transition'>About</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto peer-hover:block peer-hover:bg-gray-300 hidden' />
-        </NavLink>
-        <NavLink to='/contact'>
-          <li className='py-1 peer hover:scale-105 transition'>Contact</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto peer-hover:block peer-hover:bg-gray-300 hidden' />
-        </NavLink>
+        {token && (
+          <>
+            <NavLink to='/mes-reservations'>
+              <li className='py-1 peer hover:scale-105 transition'>Réservations</li>
+              <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto peer-hover:block peer-hover:bg-gray-300 hidden' />
+            </NavLink>
+            <NavLink to='/mon-profil'>
+              <li className='py-1 peer hover:scale-105 transition'>Profil</li>
+              <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto peer-hover:block peer-hover:bg-gray-300 hidden' />
+            </NavLink>
+          </>
+        )}
       </ul>
       <div className='flex items-center gap-4'>
         {token ? (
@@ -56,16 +60,16 @@ const Navbar = () => {
             <div className='absolute top-1 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
               <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                 <p
-                  onClick={() => navigate('/mon-profile')}
+                  onClick={() => navigate('/mon-profil')}
                   className='hover:text-primary cursor-pointer'
                 >
-                  Mon Profile
+                  Mon Profil
                 </p>
                 <p
                   onClick={() => navigate('/mes-reservations')}
                   className='hover:text-primary cursor-pointer'
                 >
-                  Mes Reservation
+                  Mes Reservations
                 </p>
                 <p
                   onClick={handleLogout} // Déconnexion

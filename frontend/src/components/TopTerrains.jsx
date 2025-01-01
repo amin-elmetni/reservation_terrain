@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TerrainCard from './reusable/TerrainCard';
 import { useNavigate } from 'react-router-dom';
-import api from '@/api'; // Assurez-vous que ce fichier contient la configuration Axios
+import api from '@/api';
 
 const TopTerrains = () => {
   const [terrains, setTerrains] = useState([]);

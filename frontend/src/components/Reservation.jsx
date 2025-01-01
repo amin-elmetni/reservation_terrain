@@ -16,8 +16,8 @@ import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Swal from 'sweetalert2';
-import axios from 'axios';
-import api from '@/api'; // Fichier Axios pour les appels API
+import api from '@/api';
+import { useParams } from 'react-router-dom';
 
 //? Valid card inputs :
 //* 4242 4242 4242 4242	Visa	Approved for testing (default)
@@ -35,6 +35,8 @@ const stripePromise = loadStripe(
 
 //! Reservation form
 const Reservation = ({ terrain }) => {
+  const { id } = useParams(); // Récupère le dernier paramètre de l'URL
+
   // Fonction qui enregistre la réservation après le paiement
   const handleReservation = async (date, selectedTimeSlot) => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -55,7 +57,7 @@ const Reservation = ({ terrain }) => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8090/api/reservations', reservationData);
+      const response = await api.post('/api/reservations', reservationData);
       Swal.fire({
         title: 'Réservation Confirmée',
         text: 'Votre réservation a été confirmée avec succès!',
@@ -105,24 +107,18 @@ const Reservation = ({ terrain }) => {
 
   const fetchReservedSlots = async () => {
     try {
-      const response = await api.get('/api/reservations');
+      const response = await api.get(`/api/reservations/terrain/${id}`);
       setReservedSlots(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des réservations:', error);
     }
   };
 
-  // const isDateReserved = selectedDate => {
-  //   // Vérifie si une date est réservée
-  //   const selectedDateFormatted = new Date(selectedDate);
-  //   selectedDateFormatted.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour une comparaison précise
-
-  //   return reservedSlots.some(reservation => {
-  //     const reservedDate = new Date(reservation.dateReservation); // Assurez-vous que c'est bien un objet Date
-  //     reservedDate.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour une comparaison précise
-  //     return reservedDate.getTime() === selectedDateFormatted.getTime();
-  //   });
-  // };
+  React.useEffect(() => {
+    if (id) {
+      fetchReservedSlots();
+    }
+  }, [id]);
 
   const isTimeSlotReserved = (selectedDate, timeSlot) => {
     // Vérifie si un créneau horaire est réservé pour une date donnée
