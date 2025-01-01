@@ -1,4 +1,3 @@
-import { assets } from '@/assets/assets';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
@@ -8,13 +7,10 @@ import { faLeaf } from '@fortawesome/free-solid-svg-icons';
 const TerrainCard = ({
   image,
   nom,
-  addresse,
-  localisation,
   disponibilite,
   capacite,
   ville,
   type_gazon,
-  responsable,
   onClick,
 }) => {
   return (

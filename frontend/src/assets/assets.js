@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './logo.png';
 import avatar from './avatar.png';
 import group_profiles from './group_profiles.png';
 import header from './header.png';

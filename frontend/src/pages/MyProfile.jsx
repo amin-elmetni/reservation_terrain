@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { FaUserCircle } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
-import { MdSportsSoccer } from 'react-icons/md';
+import Swal from 'sweetalert2';
+import api from '@/api';
 
 const villesEnum = ['CASABLANCA', 'RABAT', 'MARRAKECH', 'TANGER', 'FES', 'AGADIR', 'TETOUAN'];
 
@@ -35,26 +35,35 @@ const MyProfile = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(
-        `http://localhost:8090/api/utilisateurs/${user.id}`,
-        formData,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      const response = await api.put(`/api/utilisateurs/${user.id}`, formData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
 
       const updatedUser = response.data;
 
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
-      setPopupMessage({ type: 'success', text: 'Mise à jour réussie !' });
+      Swal.fire({
+        title: 'Modification Confirmée',
+        text: 'Mise à jour réussie !',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        timer: 2000,
+      });
+      // setPopupMessage({ type: 'success', text: 'Mise à jour réussie !' });
       setIsEditing(false);
     } catch (error) {
-      console.error('Erreur lors de la mise à jour :', error);
-      setPopupMessage({
-        type: 'error',
+      Swal.fire({
+        title: 'Erreur',
         text: 'Erreur lors de la mise à jour. Veuillez réessayer.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        timer: 2000,
       });
+      // setPopupMessage({
+      //   type: 'error',
+      //   text: 'Erreur lors de la mise à jour. Veuillez réessayer.',
+      // });
     } finally {
       setTimeout(() => setPopupMessage(null), 3000);
     }

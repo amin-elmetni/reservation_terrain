@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import api from '@/api';
 
 const villesEnum = ['CASABLANCA', 'RABAT', 'MARRAKECH', 'TANGER', 'FES', 'AGADIR', 'TETOUAN'];
 
@@ -38,7 +38,7 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8090/api/utilisateurs', formData, {
+      const response = await api.post('/api/utilisateurs', formData, {
         headers: { 'Content-Type': 'application/json' },
       });
 

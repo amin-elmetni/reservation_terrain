@@ -39,8 +39,11 @@ const Login = () => {
         JSON.stringify({ id, nom, email: userEmail, role, telephone, ville, client })
       );
 
+      // Récupérer la dernière page visitée
+      const lastVisited = localStorage.getItem('lastVisited') || '/terrains';
+
       // Redirection après connexion réussie
-      navigate('/terrains');
+      navigate(lastVisited);
       window.location.reload();
     } catch (error) {
       console.error('Erreur API :', error.response || error.message);

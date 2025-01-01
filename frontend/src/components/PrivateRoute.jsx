@@ -1,12 +1,14 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const PrivateRoute = ({ element }) => {
   // Vérifiez si un token est stocké dans le localStorage
   const token = localStorage.getItem('token');
+  const location = useLocation();
 
   // Si le token n'existe pas, redirigez vers la page de connexion
   if (!token) {
+    localStorage.setItem('lastVisited', location.pathname);
     return (
       <Navigate
         to='/login'

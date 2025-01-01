@@ -76,4 +76,9 @@ public class ReservationService {
                 .map(ReservationMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public List<Reservation> getReservationsByTerrain(Long terrainId) {
+        return reservationRepository.findByTerrainId(terrainId);
+    }
+
 }
