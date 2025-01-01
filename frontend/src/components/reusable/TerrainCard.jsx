@@ -20,7 +20,7 @@ const TerrainCard = ({
     >
       <img
         src={image}
-        className='w-full h-3/5 object-cover'
+        className='w-full h-[180px] object-cover'
       />
       <div className='p-4 flex flex-col'>
         {disponibilite ? (
